@@ -1,45 +1,63 @@
-import { verify } from 'jsonwebtoken';
+import { supabase } from './supabase';
+import Cookies from 'js-cookie';
 
-const SECRET_KEY = process.env.JWT_SECRET;
-
-export function verifyToken(token) {
-  try {
-    const decoded = verify(token, SECRET_KEY);
-    console.log('Token verified successfully:', decoded);
-    return decoded;
-  } catch (error) {
-    console.error('Token verification failed:', error);
-    return null;
-  }
+export async function getSession() {
+  const { data: { session } } = await supabase.auth.getSession();
+  return session;
 }
 
-// Remove or restrict client-side usage of verifyToken
-// Only export functions meant for server-side
-export async function getSession(req) {
-  const token = req.cookies.get('auth_token')?.value;
-  if (!token) return null;
+export async function getCurrentUser() {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
 
-  const userData = verifyToken(token);
-  if (!userData) return null;
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role, trade')
+    .eq('id', user.id)
+    .single();
 
-  return { user: userData };
+  return {
+    id: user.id,
+    email: user.email,
+    role: profile?.role,
+    trade: profile?.trade,
+  };
 }
 
-export async function getCurrentUser(request) {
-  const token = request.cookies.get('auth_token')?.value;
-  if (!token) return null;
+export function getUserFromCookie() {
+  const userCookie = Cookies.get('user');
+  return userCookie ? JSON.parse(userCookie) : null;
+}
 
-  try {
-    const decoded = verify(token, SECRET_KEY);
-    return {
-      id: decoded.id,
-      email: decoded.email,
-      name: decoded.name,
-      type: decoded.type, // Asigurați-vă că acest câmp există
-      ...(decoded.type === 'worker' ? { trade: decoded.trade } : {}),
-    };
-  } catch (error) {
-    console.error('Error verifying token:', error);
-    return null;
-  }
+export function setUserCookie(user) {
+  Cookies.set('user', JSON.stringify(user), { expires: 7, secure: true, sameSite: 'strict' });
+}
+
+export function removeUserCookie() {
+  Cookies.remove('user');
+}
+
+// server side
+
+export async function verifySession(req) {
+  const { data: { session } } = await supabase.auth.getSession(req);
+ if(!session) {
+  return null;
+ }
+
+ const userFromCookie=req.cookies.get('user');
+ if(!userFromCookie) {
+  return null;
+ }
+
+ const parsedUser=JSON.parse(userFromCookie);
+if(session.user.id !== parsedUser.id) {
+  return null;
+}
+
+
+
+
+
+  return session;
 }

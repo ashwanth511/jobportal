@@ -15,7 +15,7 @@ const HeroForm = () => {
   const router = useRouter()
 
   const trades = [
-    "Instalator", "Fierar", "Zidar", "Constructor", "Tâmplar", "Curățenie", 
+    "Instalator", "ash","Fierar", "Zidar", "Constructor", "Tâmplar", "Curățenie", 
     "Drenaj", "Pavator", "Electrician", "Montator", "Grădinar", "Inginer", 
     "Meșter", "Bucătării", "Lăcătuș", "Mansardări", "Zugrav", "Dezinsecție", 
     "Tencuitor", "Mutare", "Energie", "Acoperișuri", "Securitate", 
@@ -109,7 +109,7 @@ const HeroForm = () => {
           ) : (
             <>
               <FaSearch className="mr-2" />
-              Caută
+              Caută bro
             </>
           )}
         </motion.button>

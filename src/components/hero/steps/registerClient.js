@@ -73,7 +73,7 @@ const RegisterClient = ({ onRegisterSuccess }) => {
       exit={{ opacity: 0, y: -20 }}
       className="p-8 rounded-lg shadow-xl max-w-md mx-auto"
     >
-      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Înregistrare Client</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Înregistrare Client For the client</h2>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Nume</label>

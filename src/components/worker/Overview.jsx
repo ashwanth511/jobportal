@@ -101,7 +101,7 @@ export default function Overview({ workerData }) {
 
   return (
     <div className="p-6 bg-gray-100 rounded-xl shadow-md">
-      <h2 className="text-3xl font-bold mb-8 text-gray-800">Overview</h2>
+      <h2 className="text-3xl font-bold mb-8 text-gray-800">Overview Bro</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <motion.div
           whileHover={{ scale: 1.05 }}
